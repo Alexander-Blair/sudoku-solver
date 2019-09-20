@@ -1,11 +1,12 @@
 # frozen_string_literal: true
 
+require 'spec_helper'
 require 'horizontal_line_indexes'
 
 RSpec.describe HorizontalLineIndexes do
-  describe '.call' do
-    let(:indexes) do
-      described_class.new(square_length).find(line_number)
+  describe '#find' do
+    subject(:indexes) do
+      described_class.new(square_length).find(row_number)
     end
 
     [
@@ -24,32 +25,12 @@ RSpec.describe HorizontalLineIndexes do
       [3, 7, (63..71).to_a],
       [3, 8, (72..80).to_a],
       [4, 0, (0..15).to_a]
-    ].each do |square_length, line_number, expected_result|
-      context "when square length is #{square_length} and line index is #{line_number}" do
+    ].each do |square_length, row_number, expected_result|
+      context "when square length is #{square_length} and row number is #{row_number}" do
         let(:square_length) { square_length }
-        let(:line_number) { line_number }
+        let(:row_number) { row_number }
 
-        it 'returns the correct result' do
-          expect(indexes).to eq expected_result
-        end
-      end
-    end
-
-    [
-      [1, 1],
-      [1, 2],
-      [2, 4],
-      [2, 5],
-      [3, 9],
-      [3, 10]
-    ].each do |square_length, line_number|
-      context "when square length is #{square_length} and line index is #{line_number}" do
-        let(:square_length) { square_length }
-        let(:line_number) { line_number }
-
-        it 'raises out of range index error' do
-          expect { indexes }.to raise_error(IndexOutOfRangeError)
-        end
+        it { is_expected.to eq expected_result }
       end
     end
   end

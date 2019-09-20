@@ -1,27 +1,14 @@
 # frozen_string_literal: true
 
 require_relative 'index_out_of_range_error'
+require_relative 'index_finder'
 
 class HorizontalLineIndexes
-  def initialize(square_length)
-    @square_length = square_length
-  end
+  include IndexFinder
 
-  def find(line_number)
-    raise IndexOutOfRangeError if line_number > board_length - 1
-
-    (@indexes || {})[line_number] ||= calculate_indexes(line_number)
-  end
-
-  private
-
-  attr_reader :square_length
-
-  def calculate_indexes(line_number)
-    board_length.times.map { |index| board_length * line_number + index }
-  end
-
-  def board_length
-    @board_length ||= square_length**2
+  def calculate_indexes(row_number)
+    board_length.times.map do |columns_offset|
+      board_length * row_number + columns_offset
+    end
   end
 end

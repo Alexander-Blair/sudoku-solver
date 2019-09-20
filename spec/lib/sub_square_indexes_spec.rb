@@ -1,10 +1,11 @@
 # frozen_string_literal: true
 
+require 'spec_helper'
 require 'sub_square_indexes'
 
 RSpec.describe SubSquareIndexes do
-  describe '.call' do
-    let(:indexes) do
+  describe '#find' do
+    subject(:indexes) do
       described_class.new(square_length).find(sub_square_index)
     end
 
@@ -29,27 +30,7 @@ RSpec.describe SubSquareIndexes do
         let(:square_length) { square_length }
         let(:sub_square_index) { sub_square_index }
 
-        it 'returns the correct result' do
-          expect(indexes).to eq expected_result
-        end
-      end
-    end
-
-    [
-      [1, 1],
-      [1, 2],
-      [2, 4],
-      [2, 5],
-      [3, 9],
-      [3, 10]
-    ].each do |square_length, sub_square_index|
-      context "when square length is #{square_length} and line index is #{sub_square_index}" do
-        let(:square_length) { square_length }
-        let(:sub_square_index) { sub_square_index }
-
-        it 'raises out of range index error' do
-          expect { indexes }.to raise_error(IndexOutOfRangeError)
-        end
+        it { is_expected.to eq expected_result }
       end
     end
   end
