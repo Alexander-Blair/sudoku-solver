@@ -1,9 +1,8 @@
 # frozen_string_literal: true
 
 require 'spec_helper'
-require 'horizontal_line_indexes'
 
-RSpec.describe HorizontalLineIndexes do
+RSpec.describe Models::RowIndexes do
   describe '#find' do
     subject(:indexes) do
       described_class.new(square_length).find(row_number)

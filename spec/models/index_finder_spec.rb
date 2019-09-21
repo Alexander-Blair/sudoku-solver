@@ -1,13 +1,12 @@
 # frozen_string_literal: true
 
 require 'spec_helper'
-require 'index_finder'
 
-RSpec.describe IndexFinder do
+RSpec.describe Models::IndexFinder do
   describe '#find' do
     let(:mock_class) do
       Class.new do
-        include IndexFinder
+        include Models::IndexFinder
       end
     end
 

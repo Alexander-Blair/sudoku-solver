@@ -1,9 +1,8 @@
 # frozen_string_literal: true
 
 require 'spec_helper'
-require 'vertical_line_indexes'
 
-RSpec.describe VerticalLineIndexes do
+RSpec.describe Models::ColumnIndexes do
   describe '#find' do
     subject(:indexes) do
       described_class.new(square_length).find(column_number)

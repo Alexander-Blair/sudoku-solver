@@ -1,9 +1,8 @@
 # frozen_string_literal: true
 
 require 'spec_helper'
-require 'sub_square_indexes'
 
-RSpec.describe SubSquareIndexes do
+RSpec.describe Models::SubSquareIndexes do
   describe '#find' do
     subject(:indexes) do
       described_class.new(square_length).find(sub_square_index)

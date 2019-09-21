@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'spec_helper'
-require 'services/generate_initial_branch'
 
 RSpec.describe Services::GenerateInitialBranch do
   describe '.call' do
