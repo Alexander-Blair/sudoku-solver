@@ -12,7 +12,9 @@ RSpec.describe Filters::RemoveRestrictedValues do
       end
 
       it 'removes restricted values from other boxes' do
-        expect(filter_boxes).to eq [[3, 4], [1, 2], [1, 2]]
+        filter_boxes
+
+        expect(related_boxes).to eq [[3, 4], [1, 2], [1, 2]]
       end
     end
 
@@ -22,7 +24,9 @@ RSpec.describe Filters::RemoveRestrictedValues do
       end
 
       it 'removes restricted values from other boxes' do
-        expect(filter_boxes).to eq [[1, 2, 3], [4], [1, 2, 3], [1, 2, 3]]
+        filter_boxes
+
+        expect(related_boxes).to eq [[1, 2, 3], [4], [1, 2, 3], [1, 2, 3]]
       end
     end
 
@@ -32,7 +36,9 @@ RSpec.describe Filters::RemoveRestrictedValues do
       end
 
       it 'removes restricted values from other boxes' do
-        expect(filter_boxes).to eq(
+        filter_boxes
+
+        expect(related_boxes).to eq(
           [[1, 2, 3, 4], [5, 6], [1, 3, 4], [1, 2, 3, 4], [1, 2, 4]]
         )
       end
