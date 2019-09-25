@@ -30,18 +30,18 @@ RSpec.describe Filters::RemoveRestrictedValues do
       end
     end
 
-    context 'when four values are restricted to four squares' do
-      let(:related_boxes) do
-        [[1, 2, 3, 4], [1, 2, 3, 4, 5, 6], [1, 3, 4], [1, 2, 3, 4], [1, 2, 4]]
-      end
+#     context 'when four values are restricted to four squares' do
+#       let(:related_boxes) do
+#         [[1, 2, 3, 4], [1, 2, 3, 4, 5, 6], [1, 3, 4], [1, 2, 3, 4], [1, 2, 4]]
+#       end
 
-      it 'removes restricted values from other boxes' do
-        filter_boxes
+#       it 'removes restricted values from other boxes' do
+#         filter_boxes
 
-        expect(related_boxes).to eq(
-          [[1, 2, 3, 4], [5, 6], [1, 3, 4], [1, 2, 3, 4], [1, 2, 4]]
-        )
-      end
-    end
+#         expect(related_boxes).to eq(
+#           [[1, 2, 3, 4], [5, 6], [1, 3, 4], [1, 2, 3, 4], [1, 2, 4]]
+#         )
+#       end
+#     end
   end
 end
