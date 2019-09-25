@@ -23,15 +23,23 @@ class BranchSolver
 
       ending_total_possibilities = puzzle.flatten.count
 
-      validate_puzzle
       break if solved?(ending_total_possibilities)
-      raise IncompletePuzzleError if starting_total_possibilities == ending_total_possibilities
+
+      check_for_incomplete_puzzle(starting_total_possibilities, ending_total_possibilities)
     end
+    validate_puzzle
   end
 
   private
 
   attr_reader :puzzle, :square_length, :related_boxes_finder
+
+  def check_for_incomplete_puzzle(starting_total_possibilities, ending_total_possibilities)
+    return unless starting_total_possibilities == ending_total_possibilities
+
+    validate_puzzle
+    raise IncompletePuzzleError
+  end
 
   def validate_puzzle
     Validators::ValidatePuzzle.call(
@@ -42,7 +50,7 @@ class BranchSolver
   end
 
   def solved?(ending_total_possibilities)
-    ending_total_possibilities == puzzle.count
+    ending_total_possibilities == total_number_of_boxes
   end
 
   def run_filters_for(index)
@@ -53,5 +61,9 @@ class BranchSolver
     ].each do |related_boxes|
       FILTERS.each { |filter| filter.call(related_boxes) }
     end
+  end
+
+  def total_number_of_boxes
+    @total_number_of_boxes ||= square_length**4
   end
 end
