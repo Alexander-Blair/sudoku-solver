@@ -3,40 +3,51 @@
 class RelatedBoxesFinder
   def initialize(square_length)
     @square_length = square_length
+    @indexes = {}
   end
 
-  def find_row_boxes_from(current_branch, row_number)
-    box_indexes = row_indexes_for(row_number)
-
-    current_branch.values_at(*box_indexes)
-  end
-
-  def find_column_boxes_from(current_branch, column_number)
-    box_indexes = column_indexes_for(column_number)
-
-    current_branch.values_at(*box_indexes)
-  end
-
-  def find_sub_square_boxes_from(current_branch, sub_square_index)
-    box_indexes = sub_square_indexes_for(sub_square_index)
-
-    current_branch.values_at(*box_indexes)
+  def find(puzzle, box_type:, index:)
+    puzzle.values_at(*indexes_for(box_type, index))
   end
 
   private
 
-  attr_reader :square_length
+  attr_reader :square_length, :indexes
 
-  def row_indexes_for(row_number)
-    (@row_indexes_finder ||= Models::RowIndexes.new(square_length)).find(row_number)
+  def indexes_for(box_type, index)
+    (indexes[box_type] ||= {})[index] ||= calculate_indexes_for(box_type, index)
   end
 
-  def column_indexes_for(column_number)
-    (@column_indexes_finder ||= Models::ColumnIndexes.new(square_length)).find(column_number)
+  def calculate_indexes_for(box_type, index)
+    case box_type
+    when :row then calculate_row_indexes(index)
+    when :column then calculate_column_indexes(index)
+    when :sub_square then calculate_sub_square_indexes(index)
+    end
   end
 
-  def sub_square_indexes_for(sub_square_index)
-    (@sub_square_indexes_finder ||= Models::SubSquareIndexes.new(square_length))
-      .find(sub_square_index)
+  def calculate_column_indexes(column_number)
+    board_length.times.map { |rows_offset| rows_offset * board_length + column_number }
+  end
+
+  def calculate_row_indexes(row_number)
+    board_length.times.map { |columns_offset| board_length * row_number + columns_offset }
+  end
+
+  def calculate_sub_square_indexes(sub_square_index)
+    square_length.times.map do |line_offset|
+      starting_index = sub_square_start_index_of(sub_square_index, line_offset)
+
+      (starting_index..starting_index + square_length - 1).to_a
+    end.flatten
+  end
+
+  def sub_square_start_index_of(sub_square_index, line_offset)
+    (sub_square_index - (sub_square_index % square_length) + line_offset) * board_length +
+      (sub_square_index % square_length) * square_length
+  end
+
+  def board_length
+    @board_length ||= square_length**2
   end
 end

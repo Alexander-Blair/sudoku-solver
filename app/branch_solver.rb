@@ -40,9 +40,9 @@ class BranchSolver
 
   def run_filters_for(index)
     [
-      related_boxes_finder.find_row_boxes_from(puzzle, index),
-      related_boxes_finder.find_column_boxes_from(puzzle, index),
-      related_boxes_finder.find_sub_square_boxes_from(puzzle, index)
+      related_boxes_finder.find(puzzle, box_type: :row, index: index),
+      related_boxes_finder.find(puzzle, box_type: :column, index: index),
+      related_boxes_finder.find(puzzle, box_type: :sub_square, index: index)
     ].each do |related_boxes|
       FILTERS.each { |filter| filter.call(related_boxes) }
     end
