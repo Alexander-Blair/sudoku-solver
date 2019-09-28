@@ -2,32 +2,24 @@
 
 module Filters
   class RemoveRestrictedValues
-    def self.call(related_boxes)
-      new(related_boxes).call
-    end
+    def call(related_boxes)
+      self.related_boxes = related_boxes
 
-    def initialize(related_boxes)
-      @related_boxes = related_boxes
-    end
-
-    def call
       [3, 2].each do |number_of_restricted_values|
         next if number_of_unknown_boxes <= number_of_restricted_values
 
-        box_combinations_with_restricted_values =
-          box_combinations_with_restricted_values_for(number_of_restricted_values)
+        box_combination_with_restricted_values =
+          box_combination_with_restricted_values_for(number_of_restricted_values)
 
-        next if box_combinations_with_restricted_values.empty?
+        next if box_combination_with_restricted_values.nil?
 
-        box_combinations_with_restricted_values.each do |boxes_with_restricted_values|
-          remove_restricted_values_from_other_boxes(boxes_with_restricted_values)
-        end
+        remove_restricted_values_from_other_boxes(box_combination_with_restricted_values)
       end
     end
 
     private
 
-    attr_reader :related_boxes
+    attr_accessor :related_boxes
 
     def remove_restricted_values_from_other_boxes(boxes_with_restricted_values)
       boxes_to_remove_values_from = related_boxes.select do |box|
@@ -43,8 +35,8 @@ module Filters
       end
     end
 
-    def box_combinations_with_restricted_values_for(number_of_restricted_values)
-      box_combinations_to_check(number_of_restricted_values).select do |combo|
+    def box_combination_with_restricted_values_for(number_of_restricted_values)
+      box_combinations_to_check(number_of_restricted_values).detect do |combo|
         combo.flatten.uniq.count == number_of_restricted_values
       end
     end

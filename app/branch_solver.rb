@@ -3,7 +3,10 @@
 class BranchSolver
   extend Forwardable
 
-  FILTERS = [Filters::RemoveKnownValues, Filters::RemoveRestrictedValues].freeze
+  FILTERS = [
+    Filters::RemoveKnownValues.new,
+    Filters::RemoveRestrictedValues.new
+  ].freeze
 
   def_delegators :validator, :valid?, :solved?
 
@@ -39,12 +42,10 @@ class BranchSolver
   end
 
   def run_filters_for(index)
-    [
-      related_boxes_finder.find(puzzle, box_type: :row, index: index),
-      related_boxes_finder.find(puzzle, box_type: :column, index: index),
-      related_boxes_finder.find(puzzle, box_type: :sub_square, index: index)
-    ].each do |related_boxes|
-      FILTERS.each { |filter| filter.call(related_boxes) }
+    %i[row column sub_square].each do |box_type|
+      boxes = related_boxes_finder.find(puzzle, box_type: box_type, index: index)
+
+      FILTERS.each { |filter| filter.call(boxes) }
     end
   end
 end

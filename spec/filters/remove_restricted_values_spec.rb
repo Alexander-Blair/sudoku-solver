@@ -4,7 +4,7 @@ require 'spec_helper'
 
 RSpec.describe Filters::RemoveRestrictedValues do
   describe '.call' do
-    subject(:filter_boxes) { described_class.call(related_boxes) }
+    subject(:filter_boxes) { described_class.new.call(related_boxes) }
 
     context 'when two values are restricted to two squares' do
       let(:related_boxes) do
