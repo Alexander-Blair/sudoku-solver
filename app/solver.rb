@@ -26,30 +26,23 @@ class Solver
     loop do
       raise CannotSolvePuzzleError if current_branch.nil?
 
-      with_error_handling do
-        attempt_current_branch
+      solver = create_solver
+      solver.solve
 
-        return
-      end
+      break if solver.solved?
+
+      generate_next_branches if solver.valid?
+
+      self.branch_number = branch_number + 1
     end
   end
 
-  def attempt_current_branch
-    BranchSolver.call(
+  def create_solver
+    BranchSolver.new(
       puzzle: current_branch,
       square_length: square_length,
       related_boxes_finder: related_boxes_finder
     )
-  end
-
-  def with_error_handling
-    yield
-  rescue BranchSolver::IncompletePuzzleError
-    generate_next_branches
-    self.branch_number = branch_number + 1
-  rescue Validators::ValidatePuzzle::DuplicatedValuesError,
-         Validators::ValidatePuzzle::NoPossibleValuesFoundError
-    self.branch_number = branch_number + 1
   end
 
   def generate_next_branches
