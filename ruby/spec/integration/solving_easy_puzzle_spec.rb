@@ -3,9 +3,7 @@
 require 'spec_helper'
 
 RSpec.describe 'solving an easy puzzle' do
-  let(:puzzle) do
-    JSON.parse IO.binread('spec/support/fixtures/puzzle_easy_0.json')
-  end
+  let(:puzzle) { load_fixture('puzzle_easy_0') }
   let(:solution) do
     [
       [4], [5], [6], [7], [2], [9], [3], [8], [1],

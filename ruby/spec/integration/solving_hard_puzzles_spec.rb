@@ -4,9 +4,7 @@ require 'spec_helper'
 
 RSpec.describe 'solving hard puzzles' do
   context 'first puzzle' do
-    let(:puzzle) do
-      JSON.parse IO.binread('spec/support/fixtures/puzzle_hard_0.json')
-    end
+    let(:puzzle) { load_fixture('puzzle_hard_0') }
     let(:solution) do
       [
         [6], [5], [1], [7], [8], [2], [9], [3], [4],
@@ -27,9 +25,7 @@ RSpec.describe 'solving hard puzzles' do
   end
 
   context 'second puzzle' do
-    let(:puzzle) do
-      JSON.parse IO.binread('spec/support/fixtures/puzzle_hard_1.json')
-    end
+    let(:puzzle) { load_fixture('puzzle_hard_1') }
     let(:solution) do
       [
         [8], [1], [2], [7], [5], [3], [6], [4], [9],
@@ -50,9 +46,7 @@ RSpec.describe 'solving hard puzzles' do
   end
 
   context 'third puzzle' do
-    let(:puzzle) do
-      JSON.parse IO.binread('spec/support/fixtures/puzzle_hard_2.json')
-    end
+    let(:puzzle) { load_fixture('puzzle_hard_2') }
     let(:solution) do
       [
         [6], [2], [5], [1], [7], [8], [9], [4], [3],

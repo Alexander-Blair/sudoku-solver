@@ -1,0 +1,12 @@
+#!/usr/bin/env ruby
+
+# frozen_string_literal: true
+
+require './config/environment'
+require './lib/wrapper'
+
+measure do
+  puzzle = JSON.parse IO.binread('spec/support/fixtures/puzzle_hard_2.json')
+  solver = Solver.new(puzzle: puzzle)
+  solver.call
+end

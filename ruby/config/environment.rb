@@ -3,6 +3,7 @@
 require 'pathname'
 
 APP_ROOT = Pathname.new(__dir__).parent
+PROJECT_ROOT = APP_ROOT.parent
 $LOAD_PATH.unshift File.join(APP_ROOT, 'lib') unless $LOAD_PATH.include?(File.join(APP_ROOT, 'lib'))
 
 APP_ENV  ||= ENV.fetch('APP_ENV', 'development').to_sym
