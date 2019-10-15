@@ -46,7 +46,7 @@ class Solver
   end
 
   def generate_next_branches
-    Services::GenerateNextBranches.call(branches: branches, current_branch_number: branch_number)
+    generator.generate_next(branches, branch_number)
   end
 
   def current_branch
@@ -54,8 +54,11 @@ class Solver
   end
 
   def branches
-    @branches ||=
-      Services::GenerateInitialBranch.call(puzzle: puzzle, square_length: square_length)
+    @branches ||= generator.generate_initial(puzzle, square_length)
+  end
+
+  def generator
+    @generator ||= BranchGenerator.new
   end
 
   def related_boxes_finder
