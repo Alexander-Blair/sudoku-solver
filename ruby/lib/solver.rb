@@ -46,7 +46,9 @@ class Solver
   end
 
   def generate_next_branches
-    generator.generate_next(branches, branch_number)
+    BranchGenerator.new.generate_next_branches(current_branch).each do |b|
+      branches[branches.length] = b
+    end
   end
 
   def current_branch
@@ -54,11 +56,9 @@ class Solver
   end
 
   def branches
-    @branches ||= generator.generate_initial(puzzle, square_length)
-  end
-
-  def generator
-    @generator ||= BranchGenerator.new
+    @branches ||= {
+      0 => BranchGenerator.new.generate_initial_branch(puzzle, square_length)
+    }
   end
 
   def related_boxes_finder
