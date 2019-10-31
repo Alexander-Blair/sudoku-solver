@@ -2,7 +2,7 @@
 
 require 'benchmark'
 
-class Solver
+class PuzzleSolver
   CannotSolvePuzzleError = Class.new(StandardError)
 
   def initialize(puzzle:, square_length: 3)
@@ -14,7 +14,7 @@ class Solver
   def call
     puts(Benchmark.measure { attempt_puzzle })
 
-    current_branch
+    current_branch.flatten
   end
 
   private
