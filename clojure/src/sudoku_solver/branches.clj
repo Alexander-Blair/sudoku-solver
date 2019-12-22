@@ -22,3 +22,14 @@
         box-values-at-index (get current-branch box-index)]
     (for [possible-value box-values-at-index]
       (assoc current-branch box-index #{possible-value}))))
+
+(defn related-boxes-invalid?
+  [related-boxes]
+  (some?
+   (or
+    (some #(= (count %) 0) related-boxes)
+    (->> related-boxes
+         (filter #(= (count %) 1))
+         (frequencies)
+         (vals)
+         (some #(> % 1))))))

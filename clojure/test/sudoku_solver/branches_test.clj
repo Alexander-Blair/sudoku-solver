@@ -24,3 +24,17 @@
         expected-result '([#{1 2 3} #{1 2 3} #{1} #{4}]
                           [#{1 2 3} #{1 2 3} #{2} #{4}])]
     (is (= (branches/generate-next-branch current-branch) expected-result))))
+
+(deftest related-boxes-invalid-test
+  (testing "when a box has no possible values"
+    (let [related-boxes [#{} #{1} #{2 3 4} #{2 3 4}]]
+      (is (= (branches/related-boxes-invalid? related-boxes) true))))
+  (testing "when known values are duplicated"
+    (let [related-boxes [#{1} #{1} #{2 3 4} #{2 3 4}]]
+      (is (= (branches/related-boxes-invalid? related-boxes) true))))
+  (testing "when all values are known"
+    (let [related-boxes [#{1} #{2} #{3} #{4}]]
+      (is (= (branches/related-boxes-invalid? related-boxes) false))))
+  (testing "when not all values are known but there are no duplicated known values"
+    (let [related-boxes [#{1} #{2} #{3 4} #{3 4}]]
+      (is (= (branches/related-boxes-invalid? related-boxes) false)))))
