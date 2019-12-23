@@ -9,7 +9,7 @@
             (merge filtered-branch
                    (filters/run-all-filters (select-keys filtered-branch indexes))))
           branch
-          (apply concat (vals related-box-indexes))))
+          related-box-indexes))
 
 (defn solve-branch
   [branch related-box-indexes]
@@ -21,24 +21,25 @@
       (solve-branch filtered-branch related-box-indexes))))
 
 (defn solve-puzzle
-  [branches branch-number related-box-indexes]
-  (let [current-branch (get branches branch-number)
-        branch-solution-attempt (solve-branch current-branch related-box-indexes)]
+  [branches current-branch-number related-box-indexes]
+  (let [current-branch (get branches current-branch-number)
+        branch-solution-attempt (solve-branch current-branch related-box-indexes)
+        next-branch-number (+ current-branch-number 1)]
     (if-not (branches/branch-still-valid? branch-solution-attempt related-box-indexes)
-      (if (nil? (get branches (+ branch-number 1)))
+      (if (> next-branch-number (count branches))
         (throw (Exception. "Puzzle cannot be solved"))
-        (solve-puzzle branches (+ branch-number 1) related-box-indexes))
+        (solve-puzzle branches next-branch-number related-box-indexes))
       (if (branches/all-values-known? branch-solution-attempt)
         branch-solution-attempt
         (solve-puzzle (into branches (branches/generate-next-branch branch-solution-attempt))
-                      (+ branch-number 1)
+                      next-branch-number
                       related-box-indexes)))))
 
 (defn run-solver
   [initial-puzzle square-length]
   (let [first-branch        (branches/generate-initial-branch initial-puzzle square-length)
         branches            [first-branch]
-        related-box-indexes (related-boxes/calculate-related-box-indexes square-length)]
+        related-box-indexes (apply concat (vals (related-boxes/calculate-related-box-indexes square-length)))]
     (->> (solve-puzzle branches 0 related-box-indexes)
          (into (sorted-map))
          (vals)

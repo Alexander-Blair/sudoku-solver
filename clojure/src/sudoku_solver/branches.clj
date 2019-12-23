@@ -41,7 +41,7 @@
 (defn branch-still-valid?
   [branch related-box-indexes]
   (not-any? #(related-boxes-invalid? (select-keys branch %))
-            (apply concat (vals related-box-indexes))))
+            related-box-indexes))
 
 (defn all-values-known?
   [branch]
