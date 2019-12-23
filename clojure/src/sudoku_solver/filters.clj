@@ -43,3 +43,9 @@
          (filter #(is-restricted-combination? % related-boxes number-of-restricted-values))
          (first)
          (filter-boxes related-boxes))))
+
+(defn run-all-filters
+  [related-boxes]
+  (-> related-boxes
+      (remove-known-values)
+      (remove-restricted-values 2)))
