@@ -33,3 +33,14 @@
          (frequencies)
          (vals)
          (some #(> % 1))))))
+
+(defn branch-still-valid?
+  [branch related-box-indexes]
+  (not-any? #(related-boxes-invalid? (vals (select-keys branch %)))
+            (apply concat (vals related-box-indexes))))
+
+(defn branch-solved?
+  [branch related-box-indexes]
+  (and
+    (every? #(= (count %) 1) branch)
+    (branch-still-valid? branch related-box-indexes)))

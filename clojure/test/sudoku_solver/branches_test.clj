@@ -1,6 +1,7 @@
 (ns sudoku-solver.branches-test
   (:require [clojure.test :refer :all]
-            [sudoku-solver.branches :as branches]))
+            [sudoku-solver.branches :as branches]
+            [sudoku-solver.related-boxes :as related-boxes]))
 
 (deftest generate-initial-branch-test
   (let [puzzle [1,   nil, nil, nil,
@@ -38,3 +39,39 @@
   (testing "when not all values are known but there are no duplicated known values"
     (let [related-boxes [#{1} #{2} #{3 4} #{3 4}]]
       (is (= (branches/related-boxes-invalid? related-boxes) false)))))
+
+(deftest branch-still-valid-test
+  (let [related-box-indexes (related-boxes/calculate-related-box-indexes 2)]
+    (testing "when invalid"
+      (let [branch [#{1}     #{2}   #{3 4}   #{3 4}
+                    #{1}     #{3 4} #{2 3 4} #{2 3 4}
+                    #{2 3 4} #{3 4} #{2 3 4} #{2 3 4}
+                    #{2 3 4} #{3 4} #{2 3 4} #{2 3 4}]]
+        (is (= (branches/branch-still-valid? branch related-box-indexes) false))))
+    (testing "when the branch is solved"
+      (let [branch [#{1} #{2} #{3} #{4}
+                    #{3} #{4} #{1} #{2}
+                    #{2} #{1} #{4} #{3}
+                    #{4} #{3} #{2} #{1}]]
+        (is (= (branches/branch-still-valid? branch related-box-indexes) true))))
+    (testing "when the branch is not solved but valid"
+      (let [branch [#{1}     #{2}   #{3 4}   #{3 4}
+                    #{2 3 4} #{3 4} #{2 3 4} #{2 3 4}
+                    #{2 3 4} #{3 4} #{2 3 4} #{2 3 4}
+                    #{2 3 4} #{3 4} #{2 3 4} #{2 3 4}]]
+        (is (= (branches/branch-still-valid? branch related-box-indexes) true))))))
+
+(deftest branch-solved-test
+  (let [related-box-indexes (related-boxes/calculate-related-box-indexes 2)]
+    (testing "when branch is solved"
+      (let [branch [#{1} #{2} #{3} #{4}
+                    #{3} #{4} #{1} #{2}
+                    #{2} #{1} #{4} #{3}
+                    #{4} #{3} #{2} #{1}]]
+        (is (= (branches/branch-solved? branch related-box-indexes) true))))
+    (testing "when branch is not solved"
+      (let [branch [#{1 2} #{1 2} #{3 4} #{3 4}
+                    #{3 4} #{3 4} #{1} #{2}
+                    #{2} #{1} #{4} #{3}
+                    #{4} #{3} #{2} #{1}]]
+        (is (= (branches/branch-solved? branch related-box-indexes) false))))))
