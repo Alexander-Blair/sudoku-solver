@@ -3,18 +3,21 @@
 (defn generate-initial-branch
   [puzzle square-length]
   (let [range-end (+ 1 (* square-length square-length))]
-    (for [box-value puzzle]
-      (if (nil? box-value)
-        (into #{} (range 1 range-end))
-        #{box-value}))))
+    (->> puzzle
+         (map-indexed (fn [index box] [index box]))
+         (reduce (fn [branch [index box]]
+                   (let [possible-values (if (nil? box)
+                                           (into #{} (range 1 range-end))
+                                           #{box})]
+                     (assoc branch index possible-values)))
+                 {}))))
 
 (defn index-to-branch-from
   [current-branch]
   (->> current-branch
-       (map-indexed (fn [index box-values] {:index index :box-values box-values}))
-       (remove #(= (count (:box-values %)) 1))
-       (apply min-key #(count (:box-values %)))
-       (:index)))
+       (remove (fn [[i possible-box-values]] (= (count possible-box-values) 1)))
+       (apply min-key (fn [[i possible-box-values]] (count possible-box-values)))
+       (first)))
 
 (defn generate-next-branch
   [current-branch]
@@ -26,21 +29,20 @@
 (defn related-boxes-invalid?
   [related-boxes]
   (some?
-   (or
-    (some #(= (count %) 0) related-boxes)
-    (->> related-boxes
-         (filter #(= (count %) 1))
-         (frequencies)
-         (vals)
-         (some #(> % 1))))))
+    (or
+      (some #(= (count %) 0) (vals related-boxes))
+      (->> related-boxes
+           (vals)
+           (filter #(= (count %) 1))
+           (frequencies)
+           (vals)
+           (some #(> % 1))))))
 
 (defn branch-still-valid?
   [branch related-box-indexes]
-  (not-any? #(related-boxes-invalid? (vals (select-keys branch %)))
+  (not-any? #(related-boxes-invalid? (select-keys branch %))
             (apply concat (vals related-box-indexes))))
 
-(defn branch-solved?
-  [branch related-box-indexes]
-  (and
-    (every? #(= (count %) 1) branch)
-    (branch-still-valid? branch related-box-indexes)))
+(defn all-values-known?
+  [branch]
+  (every? #(= (count %) 1) (vals branch)))
