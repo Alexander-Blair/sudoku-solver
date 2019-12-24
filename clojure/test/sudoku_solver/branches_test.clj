@@ -41,7 +41,7 @@
       (is (= (branches/related-boxes-invalid? related-boxes) false)))))
 
 (deftest branch-still-valid-test
-  (let [related-box-indexes (related-boxes/calculate-related-box-indexes 2)]
+  (let [related-box-indexes (apply concat (vals (related-boxes/calculate-related-box-indexes 2)))]
     (testing "when invalid"
       (let [branch {0 #{1}      1 #{2}    2 #{3 4}    3 #{3 4}
                     4 #{1}      5 #{3 4}  6 #{2 3 4}  7 #{2 3 4}
