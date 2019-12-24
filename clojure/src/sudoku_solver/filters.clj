@@ -25,7 +25,7 @@
 (defn- eligible-box-index-combinations-from
   [related-boxes number-of-restricted-values]
   (let [indexes (for [[index boxes] related-boxes
-                      :when (not (= 1 (count boxes)))]
+                      :when (> (count boxes) 1)]
                   index)]
     (combinations indexes number-of-restricted-values)))
 

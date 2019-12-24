@@ -21,7 +21,10 @@
     (testing "and there are values to filter out"
       (let [related-boxes {0 #{1 2} 4 #{1 2} 8 #{1 2 3 4}}
             expected-result {0 #{1 2} 4 #{1 2} 8 #{3 4}}]
-        (is (= (filters/remove-restricted-values related-boxes 2) expected-result)))))
+        (is (= (filters/remove-restricted-values related-boxes 2) expected-result))))
+    (testing "and there is a box with no possible values"
+      (let [related-boxes {0 #{1 2} 1 #{} 2 #{2 3 4} 3 #{2 4 5}}]
+        (is (= (filters/remove-restricted-values related-boxes 2) related-boxes)))))
   (testing "when number of values is 3"
     (testing "and there are no values to filter out"
       (let [related-boxes {2 #{1 2 3} 6 #{1 2 4} 10 #{1 3} 14 #{1 2 3 4 5}}]
