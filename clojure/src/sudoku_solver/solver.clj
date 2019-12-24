@@ -15,8 +15,9 @@
   [branch related-box-indexes]
   (let [calculate-total-possible-values #(reduce + (map count (vals %)))
         filtered-branch (apply-filters branch related-box-indexes)]
-    (if (= (calculate-total-possible-values branch)
-           (calculate-total-possible-values filtered-branch))
+    (if (or (= (calculate-total-possible-values branch)
+               (calculate-total-possible-values filtered-branch))
+            (not (branches/branch-still-valid? filtered-branch related-box-indexes)))
       filtered-branch
       (solve-branch filtered-branch related-box-indexes))))
 
