@@ -11,9 +11,7 @@ class PuzzleValidator {
   constructor(puzzle, squareLength, relatedBoxIndices) {
     this.puzzle = puzzle;
     this.squareLength = squareLength;
-    this.rowIndices = relatedBoxIndices.row;
-    this.columnIndices = relatedBoxIndices.column;
-    this.subSquareIndices = relatedBoxIndices.subSquare;
+    this.relatedBoxIndices = relatedBoxIndices;
   }
 
   /**
@@ -33,9 +31,7 @@ class PuzzleValidator {
     };
 
     return this.puzzle.every((box) => box.length >= 1) &&
-      this.rowIndices.every((indices) => indicesValid(indices)) &&
-      this.columnIndices.every((indices) => indicesValid(indices)) &&
-      this.subSquareIndices.every((indices) => indicesValid(indices));
+      this.relatedBoxIndices.every((indices) => indicesValid(indices));
   }
 
   /**

@@ -4,8 +4,15 @@ const calculateRelatedBoxIndices =
 
 describe('PuzzleValidator', () => {
   let validator;
-  const lengthTwoRelatedBoxIndices = calculateRelatedBoxIndices(2);
-  const lengthThreeRelatedBoxIndices = calculateRelatedBoxIndices(3);
+
+  const relatedBoxIndices = (squareLength) => {
+    const indices = calculateRelatedBoxIndices(squareLength);
+    return [
+      ...indices.row,
+      ...indices.column,
+      ...indices.subSquare,
+    ];
+  };
 
   describe('isValid', () => {
     let puzzle;
@@ -19,8 +26,7 @@ describe('PuzzleValidator', () => {
             [3], [3], [1, 2, 3, 4], [1, 2, 3, 4],
             [1, 2, 3, 4], [1, 2, 3, 4], [1, 2, 3, 4], [1, 2, 3, 4],
           ];
-          validator =
-            new PuzzleValidator(puzzle, 2, lengthTwoRelatedBoxIndices);
+          validator = new PuzzleValidator(puzzle, 2, relatedBoxIndices(2));
         });
 
         test('it is not valid', () => {
@@ -42,8 +48,7 @@ describe('PuzzleValidator', () => {
             all, all, all, all, all, all, all, all, all,
             all, all, all, all, all, all, all, all, all,
           ];
-          validator =
-            new PuzzleValidator(puzzle, 3, lengthThreeRelatedBoxIndices);
+          validator = new PuzzleValidator(puzzle, 3, relatedBoxIndices(3));
         });
 
         test('it is not valid', () => {
@@ -61,8 +66,7 @@ describe('PuzzleValidator', () => {
             [1, 2, 3, 4], [1], [1, 2, 3, 4], [1, 2, 3, 4],
             [1, 2, 3, 4], [1, 2, 3, 4], [1, 2, 3, 4], [1, 2, 3, 4],
           ];
-          validator =
-            new PuzzleValidator(puzzle, 2, lengthTwoRelatedBoxIndices);
+          validator = new PuzzleValidator(puzzle, 2, relatedBoxIndices(2));
         });
 
         test('it is not valid', () => {
@@ -84,8 +88,7 @@ describe('PuzzleValidator', () => {
             all, all, all, all, all, [2], all, all, all,
             all, all, all, all, all, all, all, all, all,
           ];
-          validator =
-            new PuzzleValidator(puzzle, 3, lengthThreeRelatedBoxIndices);
+          validator = new PuzzleValidator(puzzle, 3, relatedBoxIndices(3));
         });
 
         test('it is not valid', () => {
@@ -103,8 +106,7 @@ describe('PuzzleValidator', () => {
             [1, 2, 3, 4], [1, 2, 3, 4], [1], [1, 2, 3, 4],
             [1, 2, 3, 4], [1, 2, 3, 4], [1, 2, 3, 4], [1],
           ];
-          validator =
-            new PuzzleValidator(puzzle, 2, lengthTwoRelatedBoxIndices);
+          validator = new PuzzleValidator(puzzle, 2, relatedBoxIndices(2));
         });
 
         test('it is not valid', () => {
@@ -126,8 +128,7 @@ describe('PuzzleValidator', () => {
             all, all, all, all, all, all, [2], all, all,
             all, all, all, all, all, all, all, all, all,
           ];
-          validator =
-            new PuzzleValidator(puzzle, 3, lengthThreeRelatedBoxIndices);
+          validator = new PuzzleValidator(puzzle, 3, relatedBoxIndices(3));
         });
 
         test('it is not valid', () => {
@@ -145,8 +146,7 @@ describe('PuzzleValidator', () => {
             [1, 2, 3, 4], [1, 2, 3, 4], [1, 2, 3, 4], [1, 2, 3, 4],
             [1, 2, 3, 4], [1, 2, 3, 4], [1, 2, 3, 4], [1, 2, 3, 4],
           ];
-          validator =
-            new PuzzleValidator(puzzle, 2, lengthTwoRelatedBoxIndices);
+          validator = new PuzzleValidator(puzzle, 2, relatedBoxIndices(2));
         });
 
         test('it is not valid', () => {
@@ -168,8 +168,7 @@ describe('PuzzleValidator', () => {
             all, all, all, all, all, all, all, all, all,
             all, all, all, all, all, all, all, all, all,
           ];
-          validator =
-            new PuzzleValidator(puzzle, 3, lengthThreeRelatedBoxIndices);
+          validator = new PuzzleValidator(puzzle, 3, relatedBoxIndices(3));
         });
 
         test('it is not valid', () => {
@@ -187,8 +186,7 @@ describe('PuzzleValidator', () => {
             [2], [1], [4], [3],
             [4], [3], [2], [1],
           ];
-          validator =
-            new PuzzleValidator(puzzle, 2, lengthTwoRelatedBoxIndices);
+          validator = new PuzzleValidator(puzzle, 2, relatedBoxIndices(2));
         });
 
         test('it is valid', () => {
@@ -209,8 +207,7 @@ describe('PuzzleValidator', () => {
             [6], [4], [5], [9], [7], [8], [3], [1], [2],
             [9], [7], [8], [3], [1], [2], [6], [4], [5],
           ];
-          validator =
-            new PuzzleValidator(puzzle, 3, lengthThreeRelatedBoxIndices);
+          validator = new PuzzleValidator(puzzle, 3, relatedBoxIndices(3));
         });
 
         test('it is valid', () => {
@@ -228,8 +225,7 @@ describe('PuzzleValidator', () => {
             [1, 2], [1], [4], [3],
             [4], [3], [2], [1],
           ];
-          validator =
-            new PuzzleValidator(puzzle, 2, lengthTwoRelatedBoxIndices);
+          validator = new PuzzleValidator(puzzle, 2, relatedBoxIndices(2));
         });
 
         test('it is valid', () => {
@@ -250,8 +246,7 @@ describe('PuzzleValidator', () => {
             [6], [4], [5], [9], [7], [8], [3], [1], [2],
             [9], [7], [8], [3], [1], [2], [6], [4], [5],
           ];
-          validator =
-            new PuzzleValidator(puzzle, 3, lengthThreeRelatedBoxIndices);
+          validator = new PuzzleValidator(puzzle, 3, relatedBoxIndices(3));
         });
 
         test('it is valid', () => {
@@ -271,8 +266,7 @@ describe('PuzzleValidator', () => {
             [2], [1], [4], [3],
             [4], [3], [2], [1],
           ];
-          validator =
-            new PuzzleValidator(puzzle, 2, lengthTwoRelatedBoxIndices);
+          validator = new PuzzleValidator(puzzle, 2, relatedBoxIndices(2));
         });
 
         test('it returns false', () => {
@@ -293,8 +287,7 @@ describe('PuzzleValidator', () => {
             [6], [4], [5], [9], [7], [8], [3], [1], [2],
             [9], [7], [8], [3], [1], [2], [6], [4], [5],
           ];
-          validator =
-            new PuzzleValidator(puzzle, 3, lengthThreeRelatedBoxIndices);
+          validator = new PuzzleValidator(puzzle, 3, relatedBoxIndices(3));
         });
 
         test('it returns false', () => {
@@ -312,8 +305,7 @@ describe('PuzzleValidator', () => {
             [2], [1], [4], [3],
             [4], [3], [2], [1],
           ];
-          validator =
-            new PuzzleValidator(puzzle, 2, lengthTwoRelatedBoxIndices);
+          validator = new PuzzleValidator(puzzle, 2, relatedBoxIndices(2));
         });
 
         test('it returns true', () => {
@@ -334,8 +326,7 @@ describe('PuzzleValidator', () => {
             [6], [4], [5], [9], [7], [8], [3], [1], [2],
             [9], [7], [8], [3], [1], [2], [6], [4], [5],
           ];
-          validator =
-            new PuzzleValidator(puzzle, 3, lengthThreeRelatedBoxIndices);
+          validator = new PuzzleValidator(puzzle, 3, relatedBoxIndices(3));
         });
 
         test('it returns true', () => {
@@ -353,8 +344,7 @@ describe('PuzzleValidator', () => {
             [1, 2], [1], [4], [3],
             [4], [3], [2], [1],
           ];
-          validator =
-            new PuzzleValidator(puzzle, 2, lengthTwoRelatedBoxIndices);
+          validator = new PuzzleValidator(puzzle, 2, relatedBoxIndices(2));
         });
 
         test('it returns false', () => {
@@ -375,8 +365,7 @@ describe('PuzzleValidator', () => {
             [6], [4], [5], [9], [7], [8], [3], [1], [2],
             [9], [7], [8], [3], [1], [2], [6], [4], [5],
           ];
-          validator =
-            new PuzzleValidator(puzzle, 3, lengthThreeRelatedBoxIndices);
+          validator = new PuzzleValidator(puzzle, 3, relatedBoxIndices(3));
         });
 
         test('it returns false', () => {
