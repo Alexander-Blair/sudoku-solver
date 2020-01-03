@@ -49,6 +49,8 @@ class RelatedBoxesFilter {
       return this.getDistinctValues(combination).size === combinationSize;
     });
 
+    if (!restrictedCombination) return;
+
     relatedBoxes.forEach((box) => {
       if (box.length > 1 && !restrictedCombination.includes(box)) {
         this.getDistinctValues(restrictedCombination).forEach((v) => {

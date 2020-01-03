@@ -38,6 +38,21 @@ describe('RelatedBoxesFilter', () => {
       });
     });
 
+    describe('when there are no restricted values', () => {
+      beforeEach(() => {
+        relatedBoxes = [[2, 3, 4], [1, 2], [1, 2, 3], [1, 3, 4, 5], [1, 2, 3]];
+        combinationSize = 2;
+      });
+
+      test('it makes no changes', () => {
+        filter.removeRestrictedValues(relatedBoxes, combinationSize);
+
+        expect(relatedBoxes).toEqual(
+            [[2, 3, 4], [1, 2], [1, 2, 3], [1, 3, 4, 5], [1, 2, 3]],
+        );
+      });
+    });
+
     describe('when we are checking for box triples', () => {
       beforeEach(() => {
         relatedBoxes = [
