@@ -10,19 +10,18 @@ class RelatedBoxesFilter {
    * @return {void}
    */
   removeKnownValues(relatedBoxes) {
-    const knownValues = relatedBoxes
-        .filter((box) => box.length === 1)
-        .map((box) => box[0]);
-
-    knownValues.forEach((value) => {
-      relatedBoxes
-          .filter((box) => box.length !== 1)
-          .forEach((box) => {
-            const indexOfValue = box.indexOf(value);
-
-            if (indexOfValue >= 0) box.splice(box.indexOf(value), 1);
+    relatedBoxes
+        .reduce((knownValues, box) => {
+          if (box.length === 1) knownValues.push(box[0]);
+          return knownValues;
+        }, [])
+        .forEach((knownValue) => {
+          relatedBoxes.forEach((box) => {
+            if (box.length === 1) return;
+            const indexOfValue = box.indexOf(knownValue);
+            if (indexOfValue >= 0) box.splice(indexOfValue, 1);
           });
-    });
+        });
   }
 
   /**
@@ -46,7 +45,7 @@ class RelatedBoxesFilter {
       new Combinator(eligibleBoxes, combinationSize).findCombinations();
 
     const restrictedCombination = eligibleCombinations.find((combination) => {
-      return this.getDistinctValues(combination).size === combinationSize;
+      return this.getDistinctValues(combination).length === combinationSize;
     });
 
     if (!restrictedCombination) return;
@@ -68,9 +67,11 @@ class RelatedBoxesFilter {
    * @return {set} the distinct values
    */
   getDistinctValues(boxes) {
-    const distinctValues = new Set();
-    boxes.forEach((possibleValues) => {
-      possibleValues.forEach((v) => distinctValues.add(v));
+    const distinctValues = [];
+    boxes.forEach((box) => {
+      for (let i = 0; i < box.length; i++) {
+        if (!distinctValues.includes(box[i])) distinctValues.push(box[i]);
+      }
     });
     return distinctValues;
   }

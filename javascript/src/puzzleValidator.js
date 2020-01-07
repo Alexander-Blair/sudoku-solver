@@ -27,7 +27,7 @@ class PuzzleValidator {
         const box = this.puzzle[indices[i]];
         if (box.length === 1) knownValues.push(box[0]);
       }
-      return knownValues.length === [...new Set(knownValues)].length;
+      return knownValues.length === new Set(knownValues).size;
     };
 
     return this.puzzle.every((box) => box.length >= 1) &&
