@@ -25,28 +25,49 @@ class Branch {
    *                terminates once no further changes can be made
    */
   solve() {
-    const getNumberOfPossibilities =
+    const getNumberOfCandidates =
       () => this.puzzle.reduce((sum, box) => sum + box.length, 0);
 
-    const startingPossibilities = getNumberOfPossibilities();
-    this.runFilters();
-    const endingPossibilities = getNumberOfPossibilities();
+    const relatedBoxesFilter = new RelatedBoxesFilter();
 
-    if (startingPossibilities !== endingPossibilities) this.solve();
+    let startingCandidates;
+
+    while (startingCandidates !== getNumberOfCandidates()) {
+      this.filterKnownValues();
+
+      startingCandidates = getNumberOfCandidates();
+
+      this.relatedBoxes.forEach((boxes) => {
+        relatedBoxesFilter.removeRestrictedValues(boxes, 3);
+        relatedBoxesFilter.removeRestrictedValues(boxes, 2);
+      });
+    }
   }
 
   /**
-   * Run all the filters on related boxes to remove candidates from each box.
-   * Note that the array of values is mutated in place.
+   * Runs the known values filter until we can't discover any new known values
    */
-  runFilters() {
+  filterKnownValues() {
     const relatedBoxesFilter = new RelatedBoxesFilter();
+    let startingKnownValues;
 
-    this.relatedBoxes.forEach((boxes) => {
-      relatedBoxesFilter.removeKnownValues(boxes);
-      relatedBoxesFilter.removeRestrictedValues(boxes, 3);
-      relatedBoxesFilter.removeRestrictedValues(boxes, 2);
-    });
+    while (startingKnownValues !== this.getNumberOfKnownValues()) {
+      startingKnownValues = this.getNumberOfKnownValues();
+
+      this.relatedBoxes.forEach((boxes) => {
+        relatedBoxesFilter.removeKnownValues(boxes);
+      });
+    }
+  }
+
+  /**
+   * Calculates the number of boxes that already have only a single candidate
+   * @return {number} the number of boxes that just one possible candidate
+   */
+  getNumberOfKnownValues() {
+    return this.puzzle.reduce((sum, box) => {
+      return box.length === 1 ? sum + 1 : sum;
+    }, 0);
   }
 
   /**
