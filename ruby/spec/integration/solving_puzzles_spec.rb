@@ -12,10 +12,15 @@ RSpec.describe 'solving puzzles' do
   ].each do |fixture_name|
     context "for fixture #{fixture_name}" do
       let(:fixture) { load_fixture(fixture_name) }
+      before { Sudoku.puzzle_state }
 
       it 'completes the puzzle' do
         expect(PuzzleSolver.new(puzzle: fixture['puzzle'], square_length: 3).call)
           .to eq fixture['solution']
+      end
+
+      it 'completes the puzzle using constraints' do
+        expect(Sudoku.solve(fixture['puzzle'])).to eq fixture['solution']
       end
     end
   end
